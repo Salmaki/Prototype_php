@@ -9,13 +9,13 @@ if (isset($_POST['calculer'])) {
         echo "Erreur : Tous les champs sont obligatoires !";
     } else if (!is_numeric($number1) || !is_numeric($number2)) {
         echo "Erreur : Veuillez entrer des nombres valides !";
-    } else if ($operation == 'div' && $number2 == 0) {
+    } else if ($operation == '/' && $number2 == 0) {
         echo "Erreur : Impossible de diviser par zéro !";
     } else {
 
         switch ($operation) {
             case '+':
-                $finalResult = $number1 + $number2;
+                $finalResultat = $number1 + $number2;
                 break;
 
             case '-':
@@ -34,8 +34,6 @@ if (isset($_POST['calculer'])) {
 }
 
 ?>
-
-
 
 <form method="POST">
 
