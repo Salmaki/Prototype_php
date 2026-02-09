@@ -1,82 +1,57 @@
+
 <?php
-$nombre1 = $nombre2 = $resultat = "";
-$operation = "";
-$erreur = "";
-$type_operation = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (!isset($_POST["nombre1"]) || !isset($_POST["nombre2"]) || $_POST["nombre1"] === "" || $_POST["nombre2"] === "") {
-        $erreur = "Veuillez remplir les deux nombres.";
-    } elseif (!is_numeric($_POST["nombre1"]) || !is_numeric($_POST["nombre2"])) {
-        $erreur = "Les valeurs doivent être des nombres.";
+if (isset($_POST['calculate'])) {
+    $number1 = $_POST['num1'];
+    $number2 = $_POST['num2'];
+    $operation = $_POST['operation'];
+
+    if (empty($number1) || empty($number2)) {
+        echo "Error : All fields are required!";
+    } else if (!is_numeric($number1) || !is_numeric($number2)) {
+        echo "Error: Please enter valid numbers!";
+    } else if ($operation == 'div' && $number2 == 0) {
+        echo "Error : Cannot divide by zero!";
     } else {
-        $nombre1 = $_POST["nombre1"];
-        $nombre2 = $_POST["nombre2"];
-        $operation = $_POST["operation"];
-
         switch ($operation) {
-            case "+":
-                $resultat = $nombre1 + $nombre2;
-                $type_operation = "Addition";
+            case 'add':
+                $finalResult = $number1 + $number2;
                 break;
-            case "-":
-                $resultat = $nombre1 - $nombre2;
-                $type_operation = "Soustraction";
+
+            case 'sub':
+                $finalResult = $number1 - $number2; 
                 break;
-            case "*":
-                $resultat = $nombre1 * $nombre2;
-                $type_operation = "Multiplication";
+
+            case 'mul':
+                $finalResult = $number1 * $number2;
                 break;
-            case "/":
-                if ($nombre2 == 0) {
-                    $erreur = "Division par zéro impossible !";
-                } else {
-                    $resultat = $nombre1 / $nombre2;
-                    $type_operation = "Division";
-                }
+
+            case 'div':
+                $finalResult = $number1 / $number2;
                 break;
-            default:
-                $erreur = "Opération non valide.";
         }
     }
 }
+
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Calculatrice PHP</title>
-</head>
-<body>
-    <h2>Calculatrice PHP</h2>
 
-    <?php if (!empty($erreur)) : ?>
-        <p style="color:red; font-weight:bold;"><?php echo $erreur; ?></p>
-    <?php endif; ?>
 
-    <form method="post" action="">
-        <label>Nombre 1 :</label>
-        <input type="text" name="nombre1" value="<?php echo htmlspecialchars($nombre1); ?>"><br><br>
 
-        <label>Nombre 2 :</label>
-        <input type="text" name="nombre2" value="<?php echo htmlspecialchars($nombre2); ?>"><br><br>
+<form method="POST">
 
-        <label>Opération :</label>
-        <select name="operation">
-            <option value="+" <?php if ($operation == '+') echo 'selected'; ?>>Addition (+)</option>
-            <option value="-" <?php if ($operation == '-') echo 'selected'; ?>>Soustraction (-)</option>
-            <option value="*" <?php if ($operation == '*') echo 'selected'; ?>>Multiplication (*)</option>
-            <option value="/" <?php if ($operation == '/') echo 'selected'; ?>>Division (/)</option>
-        </select><br><br>
+    <h2>Calculator</h2>
+    <input type="number" name="num1" id="num1">
+    <input type="number" name="num2" id="num2">
 
-        <input type="submit" value="Calculer">
-    </form>
+    <select name="operation" id="operation">
+        <option value="add">Add</option>
+        <option value="sub">Subtract</option>
+        <option value="mul">Multiply</option>
+        <option value="div">Divide</option>
+    </select>
+    <label>Final Result</label>
+    <input type="text" name="result" id="result" value="<?php echo isset($finalResult) ? $finalResult : ''; ?>" readonly>
 
-    <?php if ($resultat !== "" && empty($erreur)) : ?>
-        <hr>
-        <h3>Résultat :</h3>
-        <p>Opération : <strong><?php echo $type_operation; ?></strong></p>
-        <p>Le résultat est : <input type="text" value="<?php echo $resultat; ?>" readonly style="font-weight:bold; color:green;"></p>
-    <?php endif; ?>
-</body>
-</html>
+    <button type="submit" name="calculate">Calculate</button>
+
+</form>
