@@ -1,4 +1,3 @@
-
 <?php
 
 if (isset($_POST['calculer'])) {
@@ -7,19 +6,20 @@ if (isset($_POST['calculer'])) {
     $operation = $_POST['operation'];
 
     if (empty($number1) || empty($number2)) {
-        echo "Error : All fields are required!";
+        echo "Erreur : Tous les champs sont obligatoires !";
     } else if (!is_numeric($number1) || !is_numeric($number2)) {
-        echo "Error: Please enter valid numbers!";
+        echo "Erreur : Veuillez entrer des nombres valides !";
     } else if ($operation == 'div' && $number2 == 0) {
-        echo "Error : Cannot divide by zero!";
+        echo "Erreur : Impossible de diviser par zéro !";
     } else {
+
         switch ($operation) {
             case '+':
                 $finalResult = $number1 + $number2;
                 break;
 
             case '-':
-                $finalResultat = $number1 - $number2; 
+                $finalResultat = $number1 - $number2;
                 break;
 
             case '*':
